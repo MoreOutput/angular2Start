@@ -6,3 +6,12 @@
     </div>
   </a>
 </div>
+
+<!-- If you wanted to bind to something you'd apply ngModel to the select eleement -->
+<select (change)="navOnChange($event.target.value)">
+  <option *ngFor="let item of test" [value]="item" class="col-1-4">
+    {{ item }}
+  </option>
+</select>
+
+<hero-search></hero-search>

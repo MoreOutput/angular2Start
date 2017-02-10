@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { Hero } from './hero';
 import { HeroService } from './hero.service';
@@ -11,8 +12,17 @@ import { HeroService } from './hero.service';
 
 export class DashboardComponent implements OnInit {
   heroes: Hero[] = [];
+  test = [
+    1,
+    2,
+    3
+  ];
 
-  constructor(private heroService: HeroService) { }
+  constructor(private router: Router, private heroService: HeroService) { }
+
+  navOnChange(newVal: number): void {
+    this.router.navigate(['/hero', newVal]);
+  }
 
   ngOnInit(): void {
     this.heroService.getHeroes()

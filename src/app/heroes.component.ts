@@ -6,17 +6,7 @@ import { HeroService } from './hero.service';
 
 @Component({
   selector: 'my-heros',
-  template: `
-    <h1>{{title}}</h1>
-    <h2>My Heroes</h2>
-    <ul class="heroes">
-      <li *ngFor="let hero of heroes"
-        [class.selected]="hero === selectedHero"
-        (click)="onSelect(hero)">
-        <span class="badge">{{hero.id}}</span> {{hero.name}}
-      </li>
-    </ul>
-  `,
+  templateUrl: './app/heroes.component.html',
   styles: [`
     .selected {
       background-color: #CFD8DC !important;
@@ -65,21 +55,38 @@ import { HeroService } from './hero.service';
       margin-right: .8em;
       border-radius: 4px 0 0 4px;
     }
-  `],
-  providers: [HeroService]
+  `]
 })
 export class HeroesComponent implements OnInit {
   heroes: Hero[];
   selectedHero: Hero;
+  
   constructor(private heroService: HeroService, private router: Router) { }
+  
   getHeroes(): void {
     // here we are using fat arrows to write es5 code that would look something like
     // .then(function(heroes) { this.heroes = heroes });
     this.heroService.getHeroes().then(heroes => this.heroes = heroes);
   }
+  
   ngOnInit(): void {
     this.getHeroes();
   }
+
+  add(name: string): boolean {
+    name = name.trim();
+
+    if (!name) {return false;}
+
+    this.heroService.create(name)
+      .then(hero => {
+        this.heroes.push(hero);
+        this.selectedHero = null;
+
+        return true;
+      });
+  }
+
   onSelect(hero: Hero): void {
     this.selectedHero = hero;
 
